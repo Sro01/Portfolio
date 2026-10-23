@@ -1,0 +1,30 @@
+# Local workspace files
+tmp
+docs/superpowers
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Next.js and build output
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+*.tsbuildinfo
+
+# Environment variables (keep the example file)
+.env*
+!.env.example
+
+# Logs
+*.log
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+
+# Deployment metadata
+.vercel/

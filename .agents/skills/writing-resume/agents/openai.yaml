@@ -1,0 +1,4 @@
+interface:
+  display_name: "writing-resume"
+  short_description: "채용 직무에 맞춘 이력서 작성·검토와 제출 전 점검"
+  default_prompt: "$writing-resume를 사용해 제공한 경력과 프로젝트 자료를 바탕으로 지원 직무에 맞는 한국어 이력서를 작성해 주세요."
