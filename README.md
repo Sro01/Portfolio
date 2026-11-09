@@ -19,7 +19,7 @@
 ├── .claude/
 │   └── skills/                   작성·개발 스킬 원본 (.agents/skills는 이 폴더의 링크)
 ├── archive/                      이력 원본·조사 근거 (Git 제외, 로컬 전용)
-├── CLAUDE.md                     에이전트 지침 원본 (AGENTS.md가 안내)
+├── CLAUDE.md · AGENTS.md         에이전트 지침 (Git 제외, 로컬 전용)
 └── README.md
 ```
 
@@ -83,7 +83,6 @@ src/
 
 ## 작업 기준
 
-- [프로젝트 에이전트 지침](CLAUDE.md)
 - [커밋 규칙](docs/commit-conventions.md)
 - [프론트엔드 규칙](docs/frontend-conventions.md)
 - [이력서·포트폴리오 공통 기준](.claude/skills/writing-common/SKILL.md)

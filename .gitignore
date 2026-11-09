@@ -2,6 +2,11 @@
 /archive/
 /docs/specs/
 
+# Local-only agent instructions and product notes
+CLAUDE.md
+AGENTS.md
+PRODUCT.md
+
 # Local workspace files
 tmp
 docs/superpowers
