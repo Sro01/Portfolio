@@ -5,6 +5,8 @@
 # Local workspace files
 tmp
 docs/superpowers
+.superpowers/
+.impeccable/
 .DS_Store
 
 # Dependencies
