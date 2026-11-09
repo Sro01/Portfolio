@@ -8,6 +8,8 @@
 .claude/skills/       스킬 원본
 .agents/skills       ../.claude/skills를 가리키는 디렉터리 링크
 docs/                프로젝트 규칙
+src/                 포트폴리오 사이트 코드 (Next.js, shadcn/ui, Tailwind CSS, next-intl)
+messages/            사이트 UI 문구 (ko·en·ja·de)
 archive/             개인 기록·조사 근거·과거 스펙 (Git 제외)
 .gitignore
 README.md
@@ -19,6 +21,7 @@ CLAUDE.md            에이전트 지침 원본
 
 - [프로젝트 에이전트 지침](CLAUDE.md)
 - [커밋 규칙](docs/commit-conventions.md)
+- [프론트엔드 규칙](docs/frontend-conventions.md)
 - [이력서·포트폴리오 공통 기준](.claude/skills/writing-common/SKILL.md)
 - [이력서 작성·검토](.claude/skills/writing-resume/SKILL.md)
 - [포트폴리오 작성·검토](.claude/skills/writing-portfolio/SKILL.md)
