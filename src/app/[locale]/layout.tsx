@@ -3,23 +3,28 @@ import "pretendard-jp/dist/web/variable/pretendardvariable-jp-dynamic-subset.css
 import "../globals.css";
 
 import type { Metadata } from "next";
-import { Antic, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Mono, Lora, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
-// globals.css의 --font-sans, --font-mono 토큰이 이 변수를 참조한다.
-// 한글·일본어는 Pretendard(JP)가 맡고, 라틴 문자는 Antic이 맡는다.
-const antic = Antic({
-  variable: "--font-antic",
+// globals.css의 --font-sans, --font-serif, --font-mono 토큰이 이 변수를 참조한다.
+// 한글·일본어는 Pretendard(JP)가 맡고, 라틴 문자는 Sage Green 테마의 글꼴이 맡는다.
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
-  weight: "400",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export function generateStaticParams() {
@@ -46,7 +51,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${antic.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${lora.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
