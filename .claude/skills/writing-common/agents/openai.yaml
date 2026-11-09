@@ -1,0 +1,4 @@
+interface:
+  display_name: "writing-common"
+  short_description: "이력서·개발자 포트폴리오의 사실과 기여·검증 범위 점검"
+  default_prompt: "$writing-common을 사용해 제공한 이력서 또는 개발자 포트폴리오의 근거와 본인 기여, 미확정 정보를 점검해 주세요."

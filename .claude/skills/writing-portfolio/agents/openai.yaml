@@ -1,0 +1,4 @@
+interface:
+  display_name: "writing-portfolio"
+  short_description: "개발자 포트폴리오의 상세 사례·증거 설명·정보 구조 작성과 검토"
+  default_prompt: "$writing-portfolio를 사용해 제공한 자료의 본인 책임과 실제 판단·변경·검증을 연결하는 개발자 포트폴리오 사례를 작성해 주세요."
