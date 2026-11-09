@@ -1,0 +1,10 @@
+# 사이트 코드와 설정만 포맷한다. 문서·스킬·개인 기록은 손으로 관리한다.
+archive/
+.claude/
+.agents/
+docs/
+*.md
+.next/
+node_modules/
+pnpm-lock.yaml
+next-env.d.ts
