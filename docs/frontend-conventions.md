@@ -6,7 +6,7 @@ Next.js 16 API는 학습 데이터와 다를 수 있습니다. Next.js 코드를
 
 패키지 매니저는 pnpm만 사용합니다(`package.json`의 `packageManager`).
 
-ESLint·TypeScript로 강제할 수 있는 규칙은 이 문서가 아니라 설정 파일에 둡니다. 이 문서에는 도구가 판단할 수 없는 기준만 적습니다.
+ESLint·TypeScript로 강제할 수 있는 규칙은 이 문서가 아니라 설정 파일에 둡니다. 이 문서에는 도구가 판단할 수 없는 기준만 적습니다. `eslint.config.mjs`가 막는 것은 계층 간 역방향·기능 간 import, `components/ui/` 밖의 프리미티브 직접 import, 기본 팔레트 색상·임의값·`space-*` 클래스, JSX 문자열입니다. 위반 메시지에 대안이 적혀 있습니다.
 
 ## 구조와 의존 방향
 
@@ -23,10 +23,10 @@ src/
 messages/           UI 문구 (ko.json 기준, en·ja·de)
 ```
 
-- import는 `app → features → components → lib` 방향으로만 합니다. 기능끼리 서로 import하지 않습니다. 공유가 필요하면 `components/`나 `lib/`로 올립니다.
+- 계층은 `app → features → components → lib` 순서입니다. 다른 기능의 코드가 필요하면 `components/`나 `lib/`로 옮깁니다.
 - 한 기능에서만 쓰는 파일은 그 기능 폴더에 둡니다. 두 번째 기능에서 필요해질 때 공통 위치로 옮깁니다.
 - 배럴 `index.ts`는 만들지 않습니다.
-- Radix·Base UI 같은 프리미티브는 `components/ui/`를 거쳐 사용합니다. 그 밖의 외부 라이브러리는 `lib/`에 래퍼를 두고 사용합니다.
+- 프리미티브 외의 외부 라이브러리는 `lib/`에 래퍼를 두고 사용합니다.
 - `lib/`는 역할별 파일(`lib/date.ts`, `lib/slug.ts`)로 나눕니다. `lib/utils.ts`에는 shadcn의 `cn()`만 둡니다.
 
 ## 콘텐츠
@@ -37,7 +37,7 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 ## 다국어
 
 - 지원 언어는 ko(기준)·en·ja·de이고, 모든 URL에 언어 접두사(`/ko/...`)를 붙입니다.
-- 화면에 보이는 문구는 `messages/<언어>.json`에 두고 `useTranslations`·`getTranslations`로 불러옵니다. JSX에 직접 쓴 문자열은 ESLint가 막습니다. `alt`, `aria-label` 같은 속성 문구도 메시지로 둡니다.
+- 화면에 보이는 문구는 `messages/<언어>.json`에 두고 `useTranslations`·`getTranslations`로 불러옵니다. `alt`, `aria-label` 같은 속성 문구는 ESLint가 검사하지 않지만 마찬가지로 메시지로 둡니다.
 - 새 키는 네 언어에 모두 추가합니다. 누락은 `src/i18n/messages.test.ts`가 잡습니다.
 - 내부 링크와 이동은 `next/link`가 아니라 `@/i18n/navigation`의 `Link`·`redirect`·`useRouter`를 씁니다.
 - `[locale]` 아래 페이지와 레이아웃은 정적 렌더링을 위해 `setRequestLocale(locale)`을 호출합니다.
@@ -51,7 +51,8 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 - `components/ui/`는 디자인 시스템 전체에 적용할 변경(variant 추가 등)일 때만 수정합니다. 프로젝트 전용 모양은 기능 컴포넌트에서 조합으로 만듭니다. shadcn 업데이트는 `add <component> --diff`로 비교한 뒤 병합합니다.
 - 같은 코드가 세 번 반복될 때 추상화합니다. boolean prop이 늘어나면 `variant` 하나나 `children` 조합으로 바꿉니다.
 - 서버 컴포넌트를 기본으로 합니다. `"use client"`는 상호작용이 필요한 가장 작은 컴포넌트에만 붙입니다.
-- 애니메이션은 motion(`motion/react`)만 사용합니다. motion 컴포넌트는 클라이언트 컴포넌트이므로 애니메이션이 필요한 부분만 작은 컴포넌트로 분리합니다. 사용자의 동작 줄이기 설정(`prefers-reduced-motion`)을 존중합니다.
+- 자바스크립트 애니메이션 라이브러리는 motion(`motion/react`)만 사용합니다. framer-motion·GSAP 등은 추가하지 않습니다. CSS 전환과 motion 중 무엇을 쓸지는 motion 스킬의 `best-practices/css-or-motion.md` 기준을 따릅니다. shadcn 컴포넌트의 CSS 애니메이션(`tw-animate-css`)은 그대로 둡니다.
+- motion 컴포넌트는 클라이언트 컴포넌트이므로 애니메이션이 필요한 부분만 작은 컴포넌트로 분리합니다. 사용자의 동작 줄이기 설정(`prefers-reduced-motion`)을 존중합니다.
 
 ## 상태
 
@@ -67,7 +68,7 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 ## 스타일과 토큰
 
 - 토큰 원본은 `src/app/globals.css` 하나입니다. 토큰 값을 문서나 컴포넌트에 옮겨 적지 않습니다.
-- 색상은 의미 기반 토큰(`bg-background`, `text-muted-foreground`)만 사용합니다. 기본 팔레트(`bg-blue-500`), hex 값, 임의값(`p-[13px]`, `text-[#333]`)을 쓰지 않습니다. 필요한 값은 `@theme`에 토큰으로 등록합니다.
+- 색상은 의미 기반 토큰(`bg-background`, `text-muted-foreground`)을 씁니다. 토큰에 없는 값이 필요하면 `@theme`에 토큰으로 등록합니다.
 - 다크 모드는 토큰으로 처리하고 `dark:` 클래스로 색을 덮어쓰지 않습니다.
 - 모양은 컴포넌트 variant를 먼저 사용합니다. `className`은 배치(margin, flex, grid)에만 씁니다.
 - 반복되는 클래스 묶음은 `@apply` 대신 컴포넌트나 `cva` variant로 추출합니다.
