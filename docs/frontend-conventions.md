@@ -45,7 +45,9 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 
 - 지원 언어는 ko(기준)·en·ja·de이고, 모든 URL에 언어 접두사(`/ko/...`)를 붙입니다.
 - 화면에 보이는 문구는 `messages/<언어>.json`에 두고 `useTranslations`·`getTranslations`로 불러옵니다. `alt`, `aria-label` 같은 속성 문구는 ESLint가 검사하지 않지만 마찬가지로 메시지로 둡니다.
-- 새 키는 네 언어에 모두 추가합니다. 누락은 `src/i18n/messages.test.ts`가 잡습니다.
+- 공개 전에는 네 언어가 모두 있어야 합니다. 누락은 `Record<Locale, string>` 타입 검사와 `src/i18n/messages.test.ts`가 잡습니다.
+- 문구·콘텐츠는 한국어부터 작성합니다. 한국어 결과를 `pnpm dev`의 `/ko` 화면으로 보여 주고 사용자 승인을 받은 뒤, en·ja·de 작성은 별도 작업으로 진행합니다. 승인 전에 다른 언어를 미리 쓰지 않습니다.
+- 한국어만 작성한 단계에서는 번역 누락 때문에 `pnpm check`가 실패하는 것이 정상입니다. 이때는 `pnpm lint`와 `/ko` 화면으로 확인하고, 실패 항목이 번역 누락뿐인지 보고합니다. 커밋은 네 언어 작성과 `pnpm check` 통과 후에 합니다. 사용자가 한국어 단계의 커밋을 따로 요청하면 그 요청을 따릅니다.
 - 내부 링크와 이동은 `next/link`가 아니라 `@/i18n/navigation`의 `Link`·`redirect`·`useRouter`를 씁니다.
 - `[locale]` 아래 페이지와 레이아웃은 정적 렌더링을 위해 `setRequestLocale(locale)`을 호출합니다.
 - 번역은 원문 의미를 유지합니다. 번역하면서 사실·수치를 보태거나 바꾸지 않습니다.
