@@ -82,8 +82,8 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 - 다크 모드는 토큰으로 처리하고 `dark:` 클래스로 색을 덮어쓰지 않습니다.
 - 모양은 컴포넌트 variant를 먼저 사용합니다. `className`은 배치(margin, flex, grid)에만 씁니다.
 - 반복되는 클래스 묶음은 `@apply` 대신 컴포넌트나 `cva` variant로 추출합니다.
-- 테마는 tweakcn의 Sage Green이고, 값과 사용 기준은 루트 `DESIGN.md`에 있습니다. 폰트는 라틴 문자 Plus Jakarta Sans(본문·UI), Lora(세리프), IBM Plex Mono(코드), 한글 Pretendard, 일본어 Pretendard JP입니다. `globals.css`의 `--font-cjk`와 `[locale]/layout.tsx`의 폰트 로딩이 이를 맡습니다.
-- 테마(tweakcn 등)를 교체할 때는 `globals.css`의 변수만 바뀌는지 확인합니다. `--spacing`, 글꼴 변수가 바뀌면 전체 간격과 폰트 로딩에 영향이 있으므로 적용 전에 사용자에게 알립니다. 교체 후 `--font-sans`·`--font-serif`가 `var(--font-<라틴 글꼴>), var(--font-cjk), ...` 형태를 유지하는지 확인합니다. tweakcn 명령은 글꼴 변수를 글꼴 이름 문자열로 덮어쓰므로 교체 후 다시 맞춥니다.
+- 테마는 tweakcn의 Sage Green이고, 값과 사용 기준은 루트 `DESIGN.md`에 있습니다. 폰트는 라틴 문자 Plus Jakarta Sans(제목·UI·본문), IBM Plex Mono(코드), 한글 Pretendard, 일본어 Pretendard JP입니다. 테마에 포함된 Lora(세리프)는 쓰지 않으므로 로딩하지 않습니다. 날짜·숫자도 Plus Jakarta Sans에 고정폭 숫자(`tabular-nums`)를 쓰고 Mono는 코드에만 씁니다. `globals.css`의 `--font-cjk`와 `[locale]/layout.tsx`의 폰트 로딩이 이를 맡습니다.
+- 테마(tweakcn 등)를 교체할 때는 `globals.css`의 변수만 바뀌는지 확인합니다. `--spacing`, 글꼴 변수가 바뀌면 전체 간격과 폰트 로딩에 영향이 있으므로 적용 전에 사용자에게 알립니다. 교체 후 `--font-sans`가 `var(--font-<라틴 글꼴>), var(--font-cjk), ...` 형태를 유지하는지 확인하고, 쓰지 않는 글꼴 변수(테마가 넣는 `--font-serif` 등)는 지웁니다. tweakcn 명령은 글꼴 변수를 글꼴 이름 문자열로 덮어쓰므로 교체 후 다시 맞춥니다.
 
 ## 검증과 변경
 

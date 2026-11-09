@@ -57,12 +57,12 @@ typography:
     fontWeight: 600
     lineHeight: 1.25
   body-lg:
-    fontFamily: Lora
+    fontFamily: Plus Jakarta Sans
     fontSize: 18px
     fontWeight: 400
     lineHeight: 1.65
   body-md:
-    fontFamily: Lora
+    fontFamily: Plus Jakarta Sans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.65
@@ -143,7 +143,7 @@ Sage Green keeps chroma low. The primary (`#afbea5`) is a dusty sage, the accent
 
 The system is **calm, wellness-adjacent, and editorial**. It suits quiet products, journals, and shells that should feel settled rather than energetic.
 
-Typography pairs **Plus Jakarta Sans** for display and UI chrome with **Lora** for reading text. **IBM Plex Mono** covers code.
+Typography uses **Plus Jakarta Sans** for display, UI chrome and reading text, with **Pretendard** for Korean (Pretendard JP for Japanese). **IBM Plex Mono** covers code. The theme's Lora serif is not loaded.
 
 Emotional targets: soft, grown, unhurried — never electric lime, never clinical zinc.
 
@@ -164,14 +164,14 @@ Dark mode stage is `#070503`, cards `#100d08`, foreground `#f9f8f7`.
 
 ## Typography
 
-**Plus Jakarta Sans** leads display and UI. **Lora** is the reading face. **IBM Plex Mono** is for code.
+**Plus Jakarta Sans** leads display, UI and reading text; Korean falls back to **Pretendard** (Japanese to Pretendard JP) through `--font-cjk`. **IBM Plex Mono** is for code.
 
 - **Display / headlines:** Plus Jakarta Sans SemiBold, tight tracking.
-- **Body / reading:** Lora Regular at 16–18px, line-height about 1.65.
+- **Body / reading:** Plus Jakarta Sans + Pretendard Regular at 15–18px, line-height about 1.6.
 - **UI chrome / labels:** Plus Jakarta Sans Medium or Regular. Sentence case.
 - **Mono:** IBM Plex Mono for code, tokens, and IDs.
 
-Do not replace Lora in long-form text with the UI sans, and do not set dense tables or nav entirely in the serif.
+This site is mostly Korean, so a Latin serif body (Lora) would only touch English words and numbers inside Korean sentences. Keep body text in the sans stack; dates and numbers also use Plus Jakarta Sans with tabular figures, not the mono face.
 
 ## Layout
 
@@ -212,7 +212,7 @@ Built for the shadcn/ui token contract. Prefer semantic tokens (`bg-primary`, `t
 **Do**
 
 - Do keep chroma low. If a color shouts, it is wrong.
-- Do pair Plus Jakarta Sans for UI with Lora for reading.
+- Do keep display, UI and body on Plus Jakarta Sans with Pretendard for Korean.
 - Do use the herb accent sparingly.
 - Do support light and dark with the same color story.
 - Do use shadcn semantic tokens instead of one-off hex in components.
@@ -221,5 +221,5 @@ Built for the shadcn/ui token contract. Prefer semantic tokens (`bg-primary`, `t
 
 - Don't replace sage with lime or emerald.
 - Don't shrink the radius to 4px.
-- Don't set long reading text in the sans face when Lora is available.
+- Don't switch body text to Lora or another serif; don't use the mono face for dates or labels.
 - Don't invent extra brand colors when a token already exists.
