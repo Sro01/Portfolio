@@ -1,24 +1,25 @@
 # 프론트엔드 규칙
 
-이 규칙은 포트폴리오 사이트 코드(`src/`)와 그 설정 파일에 적용합니다. 스택은 Next.js App Router, TypeScript strict, Tailwind CSS v4, shadcn/ui, next-intl, motion, Vitest, Prettier입니다.
+이 규칙은 포트폴리오 사이트 코드(`src/`)와 그 설정 파일에 적용합니다. 스택은 Next.js App Router, TypeScript strict, Tailwind CSS v4, shadcn/ui, next-intl, motion, MDX, Vitest, Prettier입니다. 저장소와 사이트의 전체 구조는 [README](../README.md)에 있습니다.
 
 Next.js 16 API는 학습 데이터와 다를 수 있습니다. Next.js 코드를 작성하기 전에 `node_modules/next/dist/docs/`의 해당 문서를 확인합니다. `next.config.ts`의 `agentRules: false`는 `next dev`가 `AGENTS.md`에 같은 안내를 자동으로 추가하지 않게 막는 설정입니다.
 
 패키지 매니저는 pnpm만 사용합니다(`package.json`의 `packageManager`).
 
-ESLint·TypeScript로 강제할 수 있는 규칙은 이 문서가 아니라 설정 파일에 둡니다. 이 문서에는 도구가 판단할 수 없는 기준만 적습니다. `eslint.config.mjs`가 막는 것은 계층 간 역방향·기능 간 import, `components/ui/` 밖의 프리미티브 직접 import, 기본 팔레트 색상·임의값·`space-*` 클래스, JSX 문자열입니다. 위반 메시지에 대안이 적혀 있습니다.
+ESLint·TypeScript로 강제할 수 있는 규칙은 이 문서가 아니라 설정 파일에 둡니다. 이 문서에는 도구가 판단할 수 없는 기준만 적습니다. `eslint.config.mjs`가 막는 것은 계층 간 역방향·기능 간 import, `components/ui/` 밖의 프리미티브 직접 import, `features/`·`components/`의 `content/` 직접 import, 기본 팔레트 색상·임의값·`space-*` 클래스, JSX 문자열입니다. 위반 메시지에 대안이 적혀 있습니다.
 
 ## 구조와 의존 방향
 
 ```text
 src/
-  app/              라우팅·페이지 진입점, globals.css (얇게 유지)
-  features/<기능>/   한 기능의 섹션·컴포넌트·데이터 타입
+  app/[locale]/     페이지 진입점(홈·프로젝트 상세·이력서). 데이터를 조회해 섹션에 넘기기만 한다
+  features/<기능>/   화면 단위 섹션과 그 기능에서만 쓰는 컴포넌트·훅
   components/ui/    shadcn이 생성한 범용 UI
-  components/       두 기능 이상에서 쓰는 프로젝트 공통 컴포넌트
-  content/          프로젝트·경력 같은 목록 데이터
+  components/site/  헤더·푸터·언어 전환 등 여러 화면 공통 컴포넌트
+  content/          공개용으로 정제한 콘텐츠 데이터와 스키마(types.ts)
+  lib/              순수 함수, 외부 라이브러리 래퍼, 콘텐츠 조회(content.ts), cn()
   i18n/             언어 목록·요청 설정·언어 접두사를 유지하는 navigation
-  lib/              순수 함수, 외부 라이브러리 래퍼, cn()
+  mdx-components.tsx  MDX 공통 요소·스타일 (App Router에서 @next/mdx 필수 파일)
   proxy.ts          언어 감지·리다이렉트 (Next 16의 middleware)
 messages/           UI 문구 (ko.json 기준, en·ja·de)
 ```
@@ -28,10 +29,16 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 - 배럴 `index.ts`는 만들지 않습니다.
 - 프리미티브 외의 외부 라이브러리는 `lib/`에 래퍼를 두고 사용합니다.
 - `lib/`는 역할별 파일(`lib/date.ts`, `lib/slug.ts`)로 나눕니다. `lib/utils.ts`에는 shadcn의 `cn()`만 둡니다.
+- 훅은 쓰는 기능 폴더에 두고, 두 기능 이상에서 쓰일 때 `src/hooks/`로 옮깁니다(shadcn CLI가 만드는 위치와 같습니다). 타입은 데이터·컴포넌트 옆에 두고 `src/types/`는 만들지 않습니다.
 
 ## 콘텐츠
 
-- 목록 데이터(프로젝트, 경력, 기술)는 `src/content/`에 두고 TypeScript 타입으로 스키마를 정의합니다. 언어별 데이터 구조는 콘텐츠 작업을 시작할 때 정하고 이 문서에 반영합니다.
+- 콘텐츠는 `src/content/`에 두고 스키마는 `content/types.ts`에 정의합니다. 페이지가 `lib/content.ts`로 조회해 섹션에 props로 넘깁니다.
+- 언어별로 다른 짧은 필드(제목·요약·역할)는 `Record<Locale, string>` 타입으로 네 언어를 함께 둡니다. 번역 누락은 타입 검사에서 실패합니다.
+- 프로젝트 사례 본문은 `content/projects/<slug>/<언어>.mdx`에 쓰고 페이지에서 동적 import로 불러옵니다. MDX는 페이지 라우트로 쓰지 않으므로 `pageExtensions`는 바꾸지 않습니다. 기간·기술·링크처럼 언어와 무관한 값은 같은 폴더의 `meta.ts`에 둡니다. 증거(도식·표·코드)는 주장 곁에 배치합니다.
+- 경력·기술 데이터는 홈과 이력서가 함께 씁니다. 같은 사실을 두 곳에 따로 적지 않고, 문서별로 표현이 달라야 하면 같은 항목 안에 필드를 나눕니다.
+- 사이트에 공개하는 연락처는 이메일과 외부 링크(GitHub 등)뿐입니다. 전화번호·주소·생년월일·사진은 넣지 않습니다.
+- 이력서 페이지는 인쇄 스타일(`@media print`)로 브라우저의 PDF 저장을 지원합니다. 별도 PDF 파일을 따로 관리하지 않습니다.
 - 콘텐츠의 사실·근거 기준은 [writing-portfolio](../.claude/skills/writing-portfolio/SKILL.md)를 따릅니다. 코드 작업 중 내용을 추정해 채우지 않습니다.
 
 ## 다국어
@@ -42,6 +49,7 @@ messages/           UI 문구 (ko.json 기준, en·ja·de)
 - 내부 링크와 이동은 `next/link`가 아니라 `@/i18n/navigation`의 `Link`·`redirect`·`useRouter`를 씁니다.
 - `[locale]` 아래 페이지와 레이아웃은 정적 렌더링을 위해 `setRequestLocale(locale)`을 호출합니다.
 - 번역은 원문 의미를 유지합니다. 번역하면서 사실·수치를 보태거나 바꾸지 않습니다.
+- 이력서 페이지는 네 언어 모두 같은 구조로 제공하고, 날짜 형식(next-intl의 날짜 포맷)과 섹션 이름만 언어에 맞춥니다. 일본·독일 기업 제출용 양식(履歴書, Lebenslauf)은 사이트 범위가 아닙니다.
 
 ## 컴포넌트
 
