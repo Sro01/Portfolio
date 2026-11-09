@@ -63,6 +63,10 @@ const eslintConfig = defineConfig([
       PRIMITIVES,
       { group: ["@/app/*"], message: "features는 app을 import하지 않습니다." },
       {
+        group: ["@/content/*"],
+        message: "콘텐츠는 페이지가 lib/content.ts로 조회해 props로 넘깁니다.",
+      },
+      {
         group: ["@/features/*", "../*"],
         message:
           "기능끼리 import하지 않습니다. 공유가 필요하면 components/나 lib/로 옮기세요. 같은 기능 안에서는 ./ 경로를 씁니다.",
@@ -75,8 +79,8 @@ const eslintConfig = defineConfig([
     rules: layerImports([
       PRIMITIVES,
       {
-        group: ["@/app/*", "@/features/*"],
-        message: "components는 app·features를 import하지 않습니다.",
+        group: ["@/app/*", "@/features/*", "@/content/*"],
+        message: "components는 app·features·content를 import하지 않습니다.",
       },
     ]),
   },
