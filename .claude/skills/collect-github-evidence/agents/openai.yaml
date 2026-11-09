@@ -1,0 +1,4 @@
+interface:
+  display_name: "collect-github-evidence"
+  short_description: "본인 GitHub 커밋·PR을 수집해 archive에 기여 근거 묶음으로 저장"
+  default_prompt: "$collect-github-evidence를 사용해 지정한 저장소에서 본인 커밋과 PR을 수집하고 archive에 기여 근거를 정리해 주세요."
